@@ -1,24 +1,25 @@
 import React, { useState } from "react";
-import { Card } from "@/components/ui/card";
-import { CardContent } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Button } from "@/components/ui/button";
-import { MixerHorizontalIcon } from "@radix-ui/react-icons";
-import { RadioGroupItem } from "@/components/ui/radio-group";
-import { RadioGroup } from "@/components/ui/radio-group";
+import { MixerHorizontalIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { RadioGroupItem, RadioGroup } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
-
 
 const Project = () => {
-    const[keyword,setkeyword]=useState("");
+  const [keyword, setkeyword] = useState("");
+  const [activeCategory, setActiveCategory] = useState("all");
+  const [activeTag, setActiveTag] = useState("all");
+
   const handleFilterChange = (type, value) => {
-    console.log(type, value);
+    if (type === "category") setActiveCategory(value);
+    if (type === "tag") setActiveTag(value);
   };
+
   const handleSearchChange = (e) => {
-  setkeyword(e.target.value);
-};
+    setkeyword(e.target.value);
+  };
 
   const tags = [
     "all",
@@ -30,164 +31,207 @@ const Project = () => {
     "angular",
     "python",
     "Flask",
-    "django"
+    "django",
   ];
 
+  const projects = [
+    {
+      name: "Project Management System",
+      description: "Full Stack project using React + SpringBoot",
+      tech: ["React", "SpringBoot", "MySQL"],
+      category: "FullStack",
+      tags: ["react", "SpringBoot", "mysql"],
+    },
+    {
+      name: "AI Chat Application",
+      description: "Realtime chat app using MERN stack",
+      tech: ["React", "Node", "MongoDB"],
+      category: "FullStack",
+      tags: ["react", "mongodb"],
+    },
+    {
+      name: "Portfolio Website",
+      description: "Developer portfolio using Next.js",
+      tech: ["Next.js", "Tailwind"],
+      category: "Frontend",
+      tags: ["next.js"],
+    },
+    {
+      name: "Task Manager",
+      description: "Productivity app with dashboard",
+      tech: ["React", "Express", "MongoDB"],
+      category: "FullStack",
+      tags: ["react", "mongodb"],
+    },
+  ];
+
+  const filteredProjects = projects.filter((project) => {
+    const matchesKeyword = project.name.toLowerCase().includes(keyword.toLowerCase());
+    const matchesCategory = activeCategory === "all" || project.category === activeCategory;
+    const matchesTag = activeTag === "all" || project.tags.includes(activeTag.toLowerCase());
+    return matchesKeyword && matchesCategory && matchesTag;
+  });
+
   return (
-    <>
-      <div className="relative px-5 lg:px-0 lg:flex gap-5 justify-center py-5">
+    <div className="min-h-screen bg-gradient-to-b from-[#05060a] via-[#0b0f19] to-[#05060a] text-white px-5 py-8 flex justify-center gap-8">
 
-        <section className="filtersection w-full lg:w-[20rem]">
+      {/* FILTER SECTION */}
+      <section className="w-full lg:w-[20rem]">
 
-          <Card className="p-6 sticky top-10 w-full bg-[#0f1117] border border-[#2a2d35] rounded-xl shadow-lg">
+        <Card className="p-6 sticky top-10 bg-[#0f1117]/80 backdrop-blur border border-[#2a2d35] rounded-xl shadow-xl">
 
-            {/* Header */}
-            <div className="flex items-center justify-between w-full mb-4">
-              <p className="text-lg font-semibold tracking-wide text-white">
-                Filters
-              </p>
+          {/* Header */}
+          <div className="flex items-center justify-between mb-4">
+            <p className="text-lg font-semibold">Filters</p>
 
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-white hover:bg-[#1e2130] hover:text-white"
-              >
-                <MixerHorizontalIcon />
-              </Button>
-            </div>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="hover:bg-[#1e2130]"
+            >
+              <MixerHorizontalIcon />
+            </Button>
+          </div>
 
-            <CardContent className="mt-3">
+          <CardContent>
 
-              <ScrollArea className="space-y-8 h-[70vh] pr-2">
+            <ScrollArea className="h-[70vh] pr-2 space-y-8">
 
-                {/* Category */}
-                <div>
-                  <h1 className="pb-2 text-sm uppercase text-gray-400 border-b border-[#2a2d35]">
-                    Category
-                  </h1>
+              {/* CATEGORY */}
+              <div>
 
-                  <div className="pt-5">
+                <h1 className="text-sm text-gray-400 border-b border-[#2a2d35] pb-2 uppercase">
+                  Category
+                </h1>
 
-                    <RadioGroup
-                      defaultValue="all"
-                      onValueChange={(value) =>
-                        handleFilterChange("category", value)
-                      }
-                      className="space-y-3"
+                <RadioGroup
+                  defaultValue="all"
+                  onValueChange={(value) =>
+                    handleFilterChange("category", value)
+                  }
+                  className="space-y-3 pt-5"
+                >
+
+                  {["all", "FullStack", "Frontend", "Backend"].map((item) => (
+                    <div
+                      key={item}
+                      className="flex items-center gap-3 px-2 py-1 rounded hover:bg-[#1e2130]"
                     >
+                      <RadioGroupItem value={item} id={item} />
+                      <Label htmlFor={item} className="text-gray-200">
+                        {item}
+                      </Label>
+                    </div>
+                  ))}
 
-                      <div className="flex items-center gap-3 px-2 py-1 rounded-md hover:bg-[#1e2130] cursor-pointer">
-                        <RadioGroupItem value="all" id="r1" />
-                        <Label
-                          className="text-sm text-gray-200 hover:text-white"
-                          htmlFor="r1"
-                        >
-                          All
-                        </Label>
-                      </div>
+                </RadioGroup>
 
-                      <div className="flex items-center gap-3 px-2 py-1 rounded-md hover:bg-[#1e2130] cursor-pointer">
-                        <RadioGroupItem value="fullStack" id="r2" />
-                        <Label
-                          className="text-sm text-gray-200 hover:text-white"
-                          htmlFor="r2"
-                        >
-                          FullStack
-                        </Label>
-                      </div>
-
-                      <div className="flex items-center gap-3 px-2 py-1 rounded-md hover:bg-[#1e2130] cursor-pointer">
-                        <RadioGroupItem value="Frontend" id="r3" />
-                        <Label
-                          className="text-sm text-gray-200 hover:text-white"
-                          htmlFor="r3"
-                        >
-                          Frontend
-                        </Label>
-                      </div>
-
-                      <div className="flex items-center gap-3 px-2 py-1 rounded-md hover:bg-[#1e2130] cursor-pointer">
-                        <RadioGroupItem value="Backend" id="r4" />
-                        <Label
-                          className="text-sm text-gray-200 hover:text-white"
-                          htmlFor="r4"
-                        >
-                          Backend
-                        </Label>
-                      </div>
-
-                    </RadioGroup>
-
-                  </div>
-                </div>
-
-                {/* Tags */}
-                <div>
-
-                  <h1 className="pb-2 text-sm uppercase text-gray-400 border-b border-[#2a2d35]">
-                    Tags
-                  </h1>
-
-                  <div className="pt-5">
-
-                    <RadioGroup
-                      defaultValue="all"
-                      onValueChange={(value) =>
-                        handleFilterChange("tag", value)
-                      }
-                      className="grid grid-cols-2 gap-3 pt-2"
-                    >
-
-                      {tags.map((item) => (
-                        <div
-                          key={item}
-                          className="flex items-center gap-3 px-2 py-1 rounded-md hover:bg-[#1e2130] cursor-pointer"
-                        >
-                          <RadioGroupItem value={item} id={`tag-${item}`} />
-
-                          <Label
-                            className="text-sm text-gray-200 hover:text-white"
-                            htmlFor={`tag-${item}`}
-                          >
-                            {item}
-                          </Label>
-                        </div>
-                      ))}
-
-                    </RadioGroup>
-
-                  </div>
-
-                </div>
-
-              </ScrollArea>
-
-            </CardContent>
-
-          </Card>
-
-
-
-        </section>
-        <section className="projectListSection w-full lg:w-3xl">
-              <div className="flex gap-2 items-center pb-5 justify-between">
-                <div className="relative p-0 w-full">
-                 <Input placeholder="Search Project" onChange={handleSearchChange} className="w-[40%] px-9"/>
-                      
-                       <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-                </div>
               </div>
 
-              <div className="space-y-5 min-h-[74vh]">
-                      {
-                        keyword?[1,1,1].map((item)=><div>Project Card</div>):[1,1,1,1].map((item)=><div key={item}>Project Card</div>)
-                      }
-              </div>
-                
-        </section>
+              {/* TAGS */}
+              <div>
 
-      </div>
-    </>
+                <h1 className="text-sm text-gray-400 border-b border-[#2a2d35] pb-2 uppercase">
+                  Tags
+                </h1>
+
+                <RadioGroup
+                  defaultValue="all"
+                  onValueChange={(value) =>
+                    handleFilterChange("tag", value)
+                  }
+                  className="grid grid-cols-2 gap-3 pt-5"
+                >
+
+                  {tags.map((item) => (
+                    <div
+                      key={item}
+                      className="flex items-center gap-3 px-2 py-1 rounded hover:bg-[#1e2130]"
+                    >
+                      <RadioGroupItem value={item} id={`tag-${item}`} />
+
+                      <Label htmlFor={`tag-${item}`} className="text-gray-200">
+                        {item}
+                      </Label>
+                    </div>
+                  ))}
+
+                </RadioGroup>
+
+              </div>
+
+            </ScrollArea>
+
+          </CardContent>
+
+        </Card>
+
+      </section>
+
+      {/* PROJECT SECTION */}
+      <section className="w-full lg:w-[700px]">
+
+        {/* SEARCH */}
+        <div className="flex justify-center pb-6">
+
+          <div className="relative w-[60%]">
+
+            <MagnifyingGlassIcon className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
+
+            <Input
+              placeholder="Search Project..."
+              onChange={handleSearchChange}
+              className="pl-10 bg-[#0f1117] border border-[#2a2d35] text-white placeholder:text-gray-500 focus-visible:ring-0 focus-visible:border-[#3b82f6]"
+            />
+
+          </div>
+
+        </div>
+
+        {/* PROJECT LIST */}
+        <div className="space-y-4">
+
+          {filteredProjects.map((project, index) => (
+
+            <Card
+              key={index}
+              className="bg-[#0f1117] border border-[#2a2d35] hover:border-[#3b82f6] transition duration-200 cursor-pointer"
+            >
+
+              <CardContent className="p-5">
+
+                <h2 className="text-lg font-semibold">
+                  {project.name}
+                </h2>
+
+                <p className="text-sm text-gray-400 mt-1">
+                  {project.description}
+                </p>
+
+                <div className="flex gap-2 mt-3 flex-wrap">
+
+                  {project.tech.map((tech, i) => (
+                    <span
+                      key={i}
+                      className="text-xs px-2 py-1 rounded bg-[#1e2130] text-gray-300"
+                    >
+                      {tech}
+                    </span>
+                  ))}
+
+                </div>
+
+              </CardContent>
+
+            </Card>
+
+          ))}
+
+        </div>
+
+      </section>
+
+    </div>
   );
 };
 
