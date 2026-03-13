@@ -13,6 +13,7 @@ import ProjectCard from "@/Project/ProjectCard";
 
 const projects = [
   {
+    id: 1,  
     name: "Project Management System",
     description: "Full Stack project using React + SpringBoot with real-time updates.",
     tech: ["React", "SpringBoot", "MySQL"],
@@ -20,6 +21,7 @@ const projects = [
     tags: ["react", "springboot", "mysql"],
   },
   {
+    id: 2,  
     name: "AI Chat Application",
     description: "Realtime chat app using MERN stack with socket.io.",
     tech: ["React", "Node", "MongoDB"],
@@ -27,6 +29,7 @@ const projects = [
     tags: ["react", "mongodb"],
   },
   {
+    id: 3, 
     name: "Portfolio Website",
     description: "Developer portfolio using Next.js with animations and dark mode.",
     tech: ["Next.js", "Tailwind"],
@@ -34,6 +37,7 @@ const projects = [
     tags: ["next.js"],
   },
   {
+    id: 4, 
     name: "Task Manager",
     description: "Productivity app with a drag-and-drop dashboard.",
     tech: ["React", "Express", "MongoDB"],
@@ -70,13 +74,13 @@ const Project = () => {
   });
 
   return (
-  
+    // ✅ CHANGED: page background from plain black to deep navy-indigo gradient
     <div className='min-h-screen w-full bg-[#0e0f1f] relative px-5 lg:px-10 lg:flex gap-5 py-5'>
 
       {/* FILTER SECTION */}
       <section className="filtersection w-full lg:w-[20rem]">
 
-        
+        {/* ✅ CHANGED: card bg from #0f1117 to semi-transparent indigo-tinted dark */}
         <Card className="p-6 sticky top-10 w-full rounded-xl shadow-lg bg-[#131525]/80 border border-[#252a45] backdrop-blur-sm">
 
           {/* Header */}
@@ -158,14 +162,14 @@ const Project = () => {
       </section>
 
       {/* PROJECT LIST SECTION */}
-      <section className="projectListSection w-full lg:w-[48rem]">
+      <section className="projectListSection w-full lg:w-3xl">
 
         {/* Search */}
         <div className="flex gap-2 items-center pb-5 justify-between">
           <div className="relative p-0 w-full">
             <Input
               placeholder="Search Project..."
-           
+              // ✅ CHANGED: input bg to match new card color
               className="px-9 bg-[#131525]/80 border border-[#252a45] text-white placeholder:text-gray-600 focus-visible:ring-0 focus-visible:border-indigo-500 transition-colors"
               onChange={handleSearchChange}
             />

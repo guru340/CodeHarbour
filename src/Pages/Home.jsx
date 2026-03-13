@@ -4,7 +4,7 @@ import NavBar from "../Navbar/NavBar";
 const Home = () => {
     return (
        <>
-       <NavBar/>
+      
         <Project/>
        </>
     )
