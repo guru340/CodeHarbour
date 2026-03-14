@@ -3,12 +3,16 @@ import React from 'react'
 import { Button } from '@/components/ui/button'
 import CreateProjectForm from '@/Project/CreateProjectForm'
 import { PersonIcon } from '@radix-ui/react-icons'
+import { useNavigate } from 'react-router-dom'  
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 
 import logo from '@/assets/logo.png'
 
 const NavBar = () => {
+  const navigate = useNavigate()  
+
   return (
+    
     <div className='border-b border-[#252a45] py-4 px-5 flex items-center justify-between bg-[#0e0f1f]'>
 
       <div className='flex items-center gap-3'>
@@ -48,6 +52,7 @@ const NavBar = () => {
 
         {/* Upgrade Button */}
         <Button
+          onClick={() => navigate("/upgrade_plan")}
           variant='ghost'
           className='text-sm font-semibold tracking-wide text-gray-300 hover:bg-[#1e2340] hover:text-white'
         >
