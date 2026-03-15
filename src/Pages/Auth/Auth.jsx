@@ -19,7 +19,7 @@ const Auth = ({ onLogin }) => {
 
   const onSubmit = (data) => {
     console.log(isSignup ? "Signup:" : "Login:", data)
-    onLogin()  // ✅ call this after successful login/signup
+    onLogin() 
   }
 
   return (

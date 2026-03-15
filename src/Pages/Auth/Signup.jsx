@@ -1,29 +1,37 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
 import logo from '@/assets/logo.png'
+import { useDispatch, useSelector } from 'react-redux'  // ✅ ADDED
+import { register } from '@/Redux/Auth/Action'          // ✅ ADDED
 
-const Signup = ({ onLogin }) => {
+const Signup = () => {
 
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const auth = useSelector(store => store.auth)  // ✅ ADDED
 
   const form = useForm({
     defaultValues: {
-      name: "",
+      fullName: "",
       email: "",
       password: "",
     }
   })
 
-  const onSubmit = async (data) => {
-    // TODO: connect to backend
-    // const response = await axios.post("/api/auth/signup", data)
-    console.log("Signup data:", data)
-    onLogin()
+  const onSubmit = (data) => {
+    dispatch(register(data))  // ✅ dispatch Redux action
   }
+
+  // ✅ redirect to home when user is set in Redux
+  useEffect(() => {
+    if (auth.user) {
+      navigate("/")
+    }
+  }, [auth.user])
 
   return (
     <div className='min-h-screen bg-[#0e0f1f] flex items-center justify-center px-4'>
@@ -44,10 +52,10 @@ const Signup = ({ onLogin }) => {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
 
-              {/* Name */}
+              {/* ✅ fullName matches backend User model field */}
               <FormField
                 control={form.control}
-                name="name"
+                name="fullName"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel className='text-gray-300'>Full Name</FormLabel>
@@ -63,7 +71,6 @@ const Signup = ({ onLogin }) => {
                 )}
               />
 
-              {/* Email */}
               <FormField
                 control={form.control}
                 name="email"
@@ -83,7 +90,6 @@ const Signup = ({ onLogin }) => {
                 )}
               />
 
-              {/* Password */}
               <FormField
                 control={form.control}
                 name="password"

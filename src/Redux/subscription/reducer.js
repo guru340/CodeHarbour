@@ -3,7 +3,7 @@ const intialState={
     loading:false,
     error:null
 };
-export const subscriptionReducer=(state=intialState,action)=>{
+const subscriptionReducer=(state=intialState,action)=>{
     switch (action.type) {
         case "GET_USER_SUBSCRIPTIONS_REQUEST":
         case "UPGRADE_SUBSCRIPTION_REQUEST":
@@ -20,4 +20,6 @@ export const subscriptionReducer=(state=intialState,action)=>{
         default:
             return state;   
         }
-    }
+    };
+
+    export default subscriptionReducer;

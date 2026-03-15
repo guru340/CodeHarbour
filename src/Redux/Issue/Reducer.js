@@ -6,7 +6,7 @@ const initalState = {
     issueDetails: null,
 };
 
-export const issueReducer = (state = initalState, action) => {
+const issueReducer = (state = initalState, action) => {
     switch (action.type) {
         case actionTypes.FETCH_ISSUES_REQUEST:
         case actionTypes.FETCH_ISSUES_BY_ID_REQUEST:
@@ -49,8 +49,8 @@ export const issueReducer = (state = initalState, action) => {
         };
         default:
         return state;
-    }
+    };
         
-        }
+        };
 
-        
+export default issueReducer;

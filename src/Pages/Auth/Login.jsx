@@ -1,14 +1,18 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
 import logo from '@/assets/logo.png'
+import { useDispatch, useSelector } from 'react-redux'  // ✅ ADDED
+import { login } from '@/Redux/Auth/Action'              // ✅ ADDED
 
-const Login = ({ onLogin }) => {
+const Login = () => {
 
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+  const auth = useSelector(store => store.auth)  // ✅ ADDED
 
   const form = useForm({
     defaultValues: {
@@ -17,12 +21,16 @@ const Login = ({ onLogin }) => {
     }
   })
 
-  const onSubmit = async (data) => {
-    // TODO: connect to backend
-    // const response = await axios.post("/api/auth/login", data)
-    console.log("Login data:", data)
-    onLogin()
+  const onSubmit = (data) => {
+    dispatch(login(data))  // ✅ dispatch Redux action instead of direct axios
   }
+
+  // ✅ redirect to home when user is set in Redux
+  useEffect(() => {
+    if (auth.user) {
+      navigate("/")
+    }
+  }, [auth.user])
 
   return (
     <div className='min-h-screen bg-[#0e0f1f] flex items-center justify-center px-4'>
@@ -43,7 +51,6 @@ const Login = ({ onLogin }) => {
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-4'>
 
-              {/* Email */}
               <FormField
                 control={form.control}
                 name="email"
@@ -63,7 +70,6 @@ const Login = ({ onLogin }) => {
                 )}
               />
 
-              {/* Password */}
               <FormField
                 control={form.control}
                 name="password"

@@ -39,7 +39,7 @@ const IssueList = ({ status, title, issues, projectId, onCreateIssue, onDeleteIs
             </p>
 
             <DropdownMenu>
-              <DropdownMenuTrigger>
+              <DropdownMenuTrigger asChild>
                 <Button variant='ghost' size='icon' className='h-6 w-6 hover:bg-[#1e2340] text-gray-400'>
                   <DotsVerticalIcon className='w-3 h-3' />
                 </Button>

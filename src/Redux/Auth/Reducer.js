@@ -1,7 +1,6 @@
-import { tr } from "zod/v4/locales";
+
 import { GET_USER_REQUEST, GET_USER_SUCCESS, LOGIN_REQUEST, LOGIN_SUCCESS, LOGOUT, REGISTER_REQUEST, REGISTER_SUCCESS } from "./ActionType";
-import { error } from "console";
-import { jwt } from "zod";
+
 
 const intialState={
     user:null,
@@ -11,7 +10,7 @@ const intialState={
     projectSize:0
 }
 
-export const authReducer=(state=intialState,action)=>{
+const authReducer=(state=intialState,action)=>{
     switch (action.type) {
         case REGISTER_REQUEST:
         case LOGIN_REQUEST:
@@ -28,7 +27,8 @@ export const authReducer=(state=intialState,action)=>{
         case LOGOUT:
             return intialState;
         default:
-            state;
+           return state;
     }
 
 }
+export default authReducer;

@@ -11,4 +11,16 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  server: {
+    proxy: {
+      '/auth': {
+        target: 'http://localhost:8080',  // ✅ Spring Boot port
+        changeOrigin: true,
+      },
+      '/api': {
+        target: 'http://localhost:8080',
+        changeOrigin: true,
+      }
+    }
+  }
 })

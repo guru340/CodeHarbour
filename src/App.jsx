@@ -1,39 +1,61 @@
-import { useState } from 'react'
-import './App.css'
-import Home from './Pages/Home'
-import NavBar from './Navbar/NavBar'
-import { Routes, Route } from 'react-router-dom'
-import ProjectDetail from './ProjectDetails/ProjectDetail'
-import IssueDetailpage from './Project/IssueDetailpage'
-import Subscription from './Project/Subscription'
-import Login from './Pages/Auth/Login'
-import Signup from './Pages/Auth/Signup'
+import { useEffect } from "react"
+import "./App.css"
+import Home from "./Pages/Home"
+import NavBar from "./Navbar/NavBar"
+import { Routes, Route, Navigate } from "react-router-dom"
+import ProjectDetail from "./ProjectDetails/ProjectDetail"
+import IssueDetailpage from "./Project/IssueDetailpage"
+import Subscription from "./Project/Subscription"
+import Login from "./Pages/Auth/Login"
+import Signup from "./Pages/Auth/Signup"
+import { useDispatch, useSelector } from "react-redux"
+import { getUser } from "./Redux/Auth/Action"  // ✅ adjust path if different
 
 function App() {
 
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const dispatch = useDispatch()
+  const auth = useSelector(store => store.auth)  // ✅ correct
+
+  const jwt = localStorage.getItem("jwt")
+
+  useEffect(() => {
+    if (jwt) {
+      dispatch(getUser())  // etch user on app load
+    }
+  }, [jwt])
 
   return (
     <>
-      {isLoggedIn ? (
-        // ✅ Logged in — show navbar + app routes
-        <div>
-          <NavBar onLogout={() => setIsLoggedIn(false)} />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/project/:id" element={<ProjectDetail />} />
-            <Route path="/project/:id/issue/:issueId" element={<IssueDetailpage />} />
-            <Route path="/upgrade_plan" element={<Subscription />} />
-          </Routes>
-        </div>
-      ) : (
-        // ✅ Not logged in — show auth routes only
-        <Routes>
-          <Route path="/login" element={<Login onLogin={() => setIsLoggedIn(true)} />} />
-          <Route path="/signup" element={<Signup onLogin={() => setIsLoggedIn(true)} />} />
-          <Route path="*" element={<Login onLogin={() => setIsLoggedIn(true)} />} />
-        </Routes>
-      )}
+      {auth.user && <NavBar />}  {/* show navbar only when user exists */}
+
+      <Routes>
+
+        {/* Public routes */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+
+        {/* Protected routes */}
+        <Route
+          path="/"
+          element={auth.user ? <Home /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/project/:id"
+          element={auth.user ? <ProjectDetail /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/project/:id/issue/:issueId"
+          element={auth.user ? <IssueDetailpage /> : <Navigate to="/login" />}
+        />
+
+        <Route
+          path="/upgrade_plan"
+          element={auth.user ? <Subscription /> : <Navigate to="/login" />}
+        />
+
+      </Routes>
     </>
   )
 }
