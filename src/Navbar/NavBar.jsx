@@ -1,15 +1,22 @@
 import { Dialog, DialogContent, DialogHeader, DialogTrigger } from '@/components/ui/dialog'
-import React from 'react'
+import React, { use } from 'react'
 import { Button } from '@/components/ui/button'
 import CreateProjectForm from '@/Project/CreateProjectForm'
 import { PersonIcon } from '@radix-ui/react-icons'
 import { useNavigate } from 'react-router-dom'  
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
-
+import { useSelector } from 'react-redux'
 import logo from '@/assets/logo.png'
+import { logout } from '@/Redux/Auth/Action'
+import { useDispatch } from 'react-redux'
 
 const NavBar = () => {
+   const { auth } = useSelector(store => store)
   const navigate = useNavigate()  
+  const dispatch=useDispatch();
+  const handleLogout=()=>{
+    dispatch(logout())
+  };
 
   return (
     
@@ -77,14 +84,16 @@ const NavBar = () => {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent className='bg-[#131525] border border-[#252a45] text-white'>
-            <DropdownMenuItem className='hover:bg-[#1e2340] cursor-pointer text-red-400'>
+            <DropdownMenuItem 
+              onClick={handleLogout}
+            className='hover:bg-[#1e2340] cursor-pointer text-red-400'>
               Logout
             </DropdownMenuItem>
           </DropdownMenuContent>
 
         </DropdownMenu>
 
-        <p className='text-sm text-gray-300'>User</p>
+        <p className='text-sm text-gray-300'>{auth.user?.fullName}</p>
 
       </div>
 

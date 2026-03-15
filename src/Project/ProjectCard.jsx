@@ -3,11 +3,11 @@ import { Card } from '@/components/ui/card'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu'
 import { DotFilledIcon, DotsVerticalIcon } from '@radix-ui/react-icons'
 import React from 'react'
-import { useNavigate } from 'react-router-dom'  // ✅ ADDED: import useNavigate
+import { useNavigate } from 'react-router-dom'  
 
 const ProjectCard = ({ project }) => {
 
-  const navigate = useNavigate()  // ✅ ADDED: initialize navigate hook
+  const navigate = useNavigate() 
 
   const categoryColors = {
     fullstack: "text-blue-400",
@@ -36,7 +36,7 @@ const ProjectCard = ({ project }) => {
           </div>
 
           <DropdownMenu>
-            <DropdownMenuTrigger>
+            <DropdownMenuTrigger asChild>
               <Button className='rounded-full hover:bg-[#1e2340]' variant='ghost' size='icon'>
                 <DotsVerticalIcon className="text-gray-400" />
               </Button>

@@ -5,7 +5,7 @@ const initalState={
     error:null
 };
 
- export const commentReducer=(state=initalState,action)=>{
+ const commentReducer=(state=initalState,action)=>{
     switch(action.type){
         case actionTypes.CREATE_COMMENT_REQUEST:
         case actionTypes.FETCH_COMMENTS_REQUEST:
@@ -28,5 +28,10 @@ const initalState={
             return{
                 ...state,loading:false,comments:action.comments
             }
+
+            default:
+            return state;
     };
 };    
+
+export default commentReducer;  
