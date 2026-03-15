@@ -19,10 +19,7 @@ import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
@@ -99,5 +96,15 @@ public class AuthController {
         }
 
         return new UsernamePasswordAuthenticationToken(userDetails,null,userDetails.getAuthorities());
+    }
+
+
+    @GetMapping("/profile")
+    public ResponseEntity<User> getUserProfile(Authentication authentication){
+
+        String email = authentication.getName();
+        User user = userRepo.findByEmail(email);
+
+        return new ResponseEntity<>(user,HttpStatus.OK);
     }
 }
