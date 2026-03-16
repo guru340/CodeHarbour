@@ -1,0 +1,12 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+
+/* Add this to your index.css or global.css */
+html, body, #root {
+  background-color: #0e0f1f;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
