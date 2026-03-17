@@ -9,52 +9,33 @@ import Subscription from "./Project/Subscription"
 import Login from "./Pages/Auth/Login"
 import Signup from "./Pages/Auth/Signup"
 import { useDispatch, useSelector } from "react-redux"
-import { getUser } from "./Redux/Auth/Action"  // ✅ adjust path if different
+import { getUser } from "./Redux/Auth/Action"
+import { Toaster } from "sonner"
 
 function App() {
 
   const dispatch = useDispatch()
-  const auth = useSelector(store => store.auth)  // ✅ correct
-
+  const auth = useSelector(store => store.auth)
   const jwt = localStorage.getItem("jwt")
 
   useEffect(() => {
     if (jwt) {
-      dispatch(getUser())  // etch user on app load
+      dispatch(getUser())
     }
   }, [jwt])
 
   return (
     <>
-      {auth.user && <NavBar />}  {/* show navbar only when user exists */}
+      {jwt && <NavBar />}
+      <Toaster theme="dark" richColors position="top-right" />
 
       <Routes>
-
-        {/* Public routes */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/signup" element={<Signup />} />
-
-        {/* Protected routes */}
-        <Route
-          path="/"
-          element={auth.user ? <Home /> : <Navigate to="/login" />}
-        />
-
-        <Route
-          path="/project/:id"
-          element={auth.user ? <ProjectDetail /> : <Navigate to="/login" />}
-        />
-
-        <Route
-          path="/project/:id/issue/:issueId"
-          element={auth.user ? <IssueDetailpage /> : <Navigate to="/login" />}
-        />
-
-        <Route
-          path="/upgrade_plan"
-          element={auth.user ? <Subscription /> : <Navigate to="/login" />}
-        />
-
+        <Route path="/login" element={!jwt ? <Login /> : <Navigate to="/" />} />
+        <Route path="/signup" element={!jwt ? <Signup /> : <Navigate to="/" />} />
+        <Route path="/" element={jwt ? <Home /> : <Navigate to="/login" />} />
+        <Route path="/project/:id" element={jwt ? <ProjectDetail /> : <Navigate to="/login" />} />
+        <Route path="/project/:id/issue/:issueId" element={jwt ? <IssueDetailpage /> : <Navigate to="/login" />} />
+        <Route path="/upgrade_plan" element={jwt ? <Subscription /> : <Navigate to="/login" />} />
       </Routes>
     </>
   )

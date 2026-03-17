@@ -5,14 +5,15 @@ import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { useNavigate } from 'react-router-dom'
 import logo from '@/assets/logo.png'
-import { useDispatch, useSelector } from 'react-redux'  // ✅ ADDED
-import { login } from '@/Redux/Auth/Action'              // ✅ ADDED
+import { useDispatch, useSelector } from 'react-redux'
+import { login } from '@/Redux/Auth/Action'
+import { toast } from 'sonner'  // ✅ sonner
 
 const Login = () => {
 
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const auth = useSelector(store => store.auth)  // ✅ ADDED
+  const auth = useSelector(store => store.auth)
 
   const form = useForm({
     defaultValues: {
@@ -22,27 +23,35 @@ const Login = () => {
   })
 
   const onSubmit = (data) => {
-    dispatch(login(data))  // ✅ dispatch Redux action instead of direct axios
+    dispatch(login(data))
   }
 
-  // ✅ redirect to home when user is set in Redux
   useEffect(() => {
     if (auth.user) {
+      sessionStorage.setItem("justLoggedIn", "true")
       navigate("/")
     }
   }, [auth.user])
+
+  // ✅ show error on form when login fails
+  useEffect(() => {
+    if (auth.error) {
+      form.setError("password", {
+        type: "manual",
+        message: "Invalid email or password"
+      })
+    }
+  }, [auth.error])
 
   return (
     <div className='min-h-screen bg-[#0e0f1f] flex items-center justify-center px-4'>
       <div className='w-full max-w-md'>
 
-        {/* Logo */}
         <div className='flex items-center justify-center gap-3 mb-8'>
           <img src={logo} alt="CodeHarbour" className='w-10 h-10 rounded-md object-contain' />
           <p className='text-xl font-bold text-white tracking-wide'>CodeHarBour</p>
         </div>
 
-        {/* Card */}
         <div className='bg-[#131525] border border-[#252a45] rounded-xl p-8'>
 
           <h1 className='text-2xl font-bold text-white mb-1'>Welcome back</h1>
