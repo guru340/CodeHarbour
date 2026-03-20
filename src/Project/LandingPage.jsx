@@ -1,12 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-
-// ============================================================
-// LANDING PAGE — CodeHarbour
-// Aesthetic: Deep space / naval command center
-// Typography: Clash Display (display) + DM Sans (body)
-// Colors: Deep navy #0a0b18, indigo accent, cyan highlight
-// ============================================================
+import logo from "@/assets/logo.png"; // ✅ actual logo
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -18,7 +12,6 @@ const LandingPage = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Load fonts
   useEffect(() => {
     const link = document.createElement("link");
     link.rel = "stylesheet";
@@ -89,32 +82,22 @@ const LandingPage = () => {
       style={{ fontFamily: "'DM Sans', sans-serif" }}
       className="min-h-screen bg-[#070810] text-white overflow-x-hidden"
     >
-      {/* ── Ambient background ── */}
+      {/* Ambient background */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div
           className="absolute top-[-20%] left-[10%] w-[600px] h-[600px] rounded-full opacity-20"
           style={{
-            background:
-              "radial-gradient(circle, #4f46e5 0%, transparent 70%)",
+            background: "radial-gradient(circle, #4f46e5 0%, transparent 70%)",
             transform: `translateY(${scrollY * 0.15}px)`,
           }}
         />
         <div
           className="absolute top-[40%] right-[-10%] w-[500px] h-[500px] rounded-full opacity-10"
           style={{
-            background:
-              "radial-gradient(circle, #06b6d4 0%, transparent 70%)",
+            background: "radial-gradient(circle, #06b6d4 0%, transparent 70%)",
             transform: `translateY(${scrollY * -0.1}px)`,
           }}
         />
-        <div
-          className="absolute bottom-0 left-[30%] w-[800px] h-[300px] opacity-10"
-          style={{
-            background:
-              "radial-gradient(ellipse, #818cf8 0%, transparent 70%)",
-          }}
-        />
-        {/* Grid overlay */}
         <div
           className="absolute inset-0 opacity-[0.03]"
           style={{
@@ -126,11 +109,14 @@ const LandingPage = () => {
       </div>
 
       {/* ── NAVBAR ── */}
-      <nav className="relative z-50 flex items-center justify-between px-8 lg:px-20 py-6 border-b border-white/5">
+      <nav className="relative z-50 flex items-center justify-between px-8 lg:px-20 py-5 border-b border-white/5">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-lg bg-indigo-600 flex items-center justify-center text-sm font-bold">
-            CH
-          </div>
+          {/* Real logo image */}
+          <img
+            src={logo}
+            alt="CodeHarbour"
+            className="w-10 h-10 rounded-xl object-contain"
+          />
           <span
             style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800 }}
             className="text-xl text-white"
@@ -161,42 +147,36 @@ const LandingPage = () => {
       {/* ── HERO ── */}
       <section className="relative z-10 min-h-screen flex flex-col items-center justify-center px-6 text-center pt-20 pb-32">
 
-        {/* Badge */}
-        <div className="inline-flex items-center gap-2 border border-indigo-500/30 bg-indigo-500/10 rounded-full px-4 py-1.5 text-xs text-indigo-300 mb-8 animate-fade-in">
+        <div className="inline-flex items-center gap-2 border border-indigo-500/30 bg-indigo-500/10 rounded-full px-4 py-1.5 text-xs text-indigo-300 mb-8">
           <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-pulse" />
           Project Management for Developers
         </div>
 
-        {/* Headline */}
         <h1
           style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800, lineHeight: 1.05 }}
           className="text-5xl md:text-7xl lg:text-8xl text-white max-w-5xl mx-auto mb-6"
         >
           Ship faster.
           <br />
-          <span
-            style={{
-              background: "linear-gradient(135deg, #818cf8 0%, #06b6d4 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-            }}
-          >
+          <span style={{
+            background: "linear-gradient(135deg, #818cf8 0%, #06b6d4 100%)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+          }}>
             Together.
           </span>
         </h1>
 
-        {/* Subheadline */}
         <p className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10 leading-relaxed">
           CodeHarbour is the all-in-one workspace for dev teams —
           issue tracking, kanban boards, team chat, and project management
           in one seamless platform.
         </p>
 
-        {/* CTA buttons */}
         <div className="flex flex-col sm:flex-row items-center gap-4">
           <button
             onClick={() => navigate("/signup")}
-            className="group relative px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold text-base transition-all duration-200 shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:-translate-y-0.5"
+            className="group px-8 py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold text-base transition-all duration-200 shadow-lg shadow-indigo-500/25 hover:-translate-y-0.5"
           >
             Start for free
             <span className="ml-2 group-hover:translate-x-1 inline-block transition-transform">→</span>
@@ -209,19 +189,18 @@ const LandingPage = () => {
           </button>
         </div>
 
-        {/* Hero visual */}
+        {/* Hero mock board */}
         <div className="mt-20 w-full max-w-4xl mx-auto relative">
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-[#070810] z-10 pointer-events-none" />
           <div className="border border-white/10 rounded-2xl bg-[#0e0f1f]/80 backdrop-blur-sm p-6 shadow-2xl shadow-indigo-500/10">
-
-            {/* Mock project board */}
             <div className="flex items-center gap-3 mb-5 pb-4 border-b border-white/5">
+              {/* Logo in mock window too */}
+              <img src={logo} alt="logo" className="w-5 h-5 rounded object-contain" />
               <div className="w-3 h-3 rounded-full bg-red-500/60" />
               <div className="w-3 h-3 rounded-full bg-yellow-500/60" />
               <div className="w-3 h-3 rounded-full bg-green-500/60" />
               <span className="text-xs text-gray-600 ml-2">CodeHarbour — Dashboard</span>
             </div>
-
             <div className="grid grid-cols-3 gap-3">
               {["Todo List", "In Progress", "Done"].map((col, ci) => (
                 <div key={col} className="bg-[#131525] rounded-xl p-3 border border-white/5">
@@ -257,7 +236,6 @@ const LandingPage = () => {
       {/* ── FEATURES ── */}
       <section id="features" className="relative z-10 px-6 lg:px-20 py-32">
         <div className="max-w-6xl mx-auto">
-
           <div className="text-center mb-16">
             <p className="text-xs uppercase tracking-widest text-indigo-400 mb-3">Features</p>
             <h2
@@ -270,7 +248,6 @@ const LandingPage = () => {
               Built specifically for developer teams who move fast and need tools that keep up.
             </p>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
             {features.map((f, i) => (
               <div
@@ -296,7 +273,6 @@ const LandingPage = () => {
       {/* ── TESTIMONIALS ── */}
       <section id="testimonials" className="relative z-10 px-6 lg:px-20 py-32">
         <div className="max-w-6xl mx-auto">
-
           <div className="text-center mb-16">
             <p className="text-xs uppercase tracking-widest text-indigo-400 mb-3">Testimonials</p>
             <h2
@@ -306,24 +282,18 @@ const LandingPage = () => {
               Loved by dev teams
             </h2>
           </div>
-
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {testimonials.map((t, i) => (
               <div
                 key={i}
                 className="border border-white/5 bg-[#0e0f1f]/60 rounded-2xl p-6 hover:border-white/10 transition-all duration-300"
               >
-                {/* Stars */}
                 <div className="flex gap-1 mb-4">
                   {[...Array(5)].map((_, si) => (
                     <span key={si} className="text-indigo-400 text-sm">★</span>
                   ))}
                 </div>
-
-                <p className="text-gray-300 text-sm leading-relaxed mb-6">
-                  "{t.text}"
-                </p>
-
+                <p className="text-gray-300 text-sm leading-relaxed mb-6">"{t.text}"</p>
                 <div className="flex items-center gap-3">
                   <div className={`w-10 h-10 rounded-full bg-gradient-to-br ${t.color} flex items-center justify-center text-sm font-bold text-white`}>
                     {t.avatar}
@@ -339,7 +309,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      {/* ── CTA BANNER ── */}
+      {/* ── CTA ── */}
       <section className="relative z-10 px-6 lg:px-20 py-20">
         <div className="max-w-4xl mx-auto">
           <div className="relative border border-indigo-500/20 rounded-3xl p-12 text-center overflow-hidden">
@@ -355,7 +325,7 @@ const LandingPage = () => {
             </p>
             <button
               onClick={() => navigate("/signup")}
-              className="px-10 py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold text-base transition-all duration-200 shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 hover:-translate-y-0.5"
+              className="px-10 py-4 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl font-semibold text-base transition-all duration-200 shadow-lg shadow-indigo-500/25 hover:-translate-y-0.5"
             >
               Get started for free →
             </button>
@@ -367,9 +337,8 @@ const LandingPage = () => {
       <footer className="relative z-10 border-t border-white/5 px-6 lg:px-20 py-12">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center text-xs font-bold">
-              CH
-            </div>
+            {/* ✅ Logo in footer too */}
+            <img src={logo} alt="CodeHarbour" className="w-8 h-8 rounded-lg object-contain" />
             <span
               style={{ fontFamily: "'Syne', sans-serif", fontWeight: 800 }}
               className="text-white"
@@ -377,33 +346,14 @@ const LandingPage = () => {
               CodeHarbour
             </span>
           </div>
-
           <div className="flex items-center gap-8 text-sm text-gray-500">
             <a href="#features" className="hover:text-white transition-colors">Features</a>
             <a href="#testimonials" className="hover:text-white transition-colors">Testimonials</a>
-            <span
-              onClick={() => navigate("/login")}
-              className="cursor-pointer hover:text-white transition-colors"
-            >
-              Sign In
-            </span>
+            <span onClick={() => navigate("/login")} className="cursor-pointer hover:text-white transition-colors">Sign In</span>
           </div>
-
-          <p className="text-xs text-gray-600">
-            © 2026 CodeHarbour. Built for developers.
-          </p>
+          <p className="text-xs text-gray-600">© 2026 CodeHarbour. Built for developers.</p>
         </div>
       </footer>
-
-      <style>{`
-        @keyframes fade-in {
-          from { opacity: 0; transform: translateY(10px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-          animation: fade-in 0.6s ease forwards;
-        }
-      `}</style>
     </div>
   );
 };
