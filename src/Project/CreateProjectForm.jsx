@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState } from "react"
 import { useForm } from "react-hook-form"
 
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
@@ -6,20 +6,29 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { DialogClose } from "@/components/ui/dialog"
+import { useDispatch } from "react-redux"
+import { CreateProject } from "@/Redux/Project/Action"
 
 const CreateProjectForm = () => {
+  const dispatch = useDispatch()
 
+  //  Start with empty tags — no tags pre-selected by default
   const form = useForm({
     defaultValues: {
       name: "",
       description: "",
       category: "",
-      tags: ["javascript", "react"],
+      tags: [],
     }
   })
 
+  //Track dialog close separately so it only closes on valid submit
+  const [submitSuccess, setSubmitSuccess] = useState(false)
+
   const onSubmit = (data) => {
-    console.log(data)
+    dispatch(CreateProject(data))
+    console.log("Submitting project:", data)
+    setSubmitSuccess(true)
   }
 
   const tags = [
@@ -37,7 +46,6 @@ const CreateProjectForm = () => {
 
   const categories = ["FullStack", "Frontend", "Backend"]
 
-  // change this later when you connect backend
   const projectLimitReached = false
 
   return (
@@ -50,6 +58,7 @@ const CreateProjectForm = () => {
           <FormField
             control={form.control}
             name="name"
+            rules={{ required: "Project name is required" }}
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-gray-300">Project Name</FormLabel>
@@ -88,6 +97,7 @@ const CreateProjectForm = () => {
           <FormField
             control={form.control}
             name="category"
+            rules={{ required: "Please select a category" }}
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-gray-300">Category</FormLabel>
@@ -110,7 +120,6 @@ const CreateProjectForm = () => {
                       </SelectItem>
                     ))}
                   </SelectContent>
-
                 </Select>
 
                 <FormMessage />
@@ -124,38 +133,53 @@ const CreateProjectForm = () => {
             name="tags"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-gray-300">Tags</FormLabel>
+                <FormLabel className="text-gray-300">
+                  Tags{" "}
+                  {/* Shows how many tags are selected */}
+                  {field.value.length > 0 && (
+                    <span className="ml-1 text-indigo-400 text-xs font-normal">
+                      ({field.value.length} selected)
+                    </span>
+                  )}
+                </FormLabel>
 
                 <div className="flex flex-wrap gap-2 mt-1">
                   {tags.map((tag) => {
-
                     const isSelected = field.value.includes(tag)
 
                     return (
                       <span
                         key={tag}
                         onClick={() => {
-
+                          // Toggle: remove if selected, add if not
                           if (isSelected) {
                             field.onChange(field.value.filter((t) => t !== tag))
                           } else {
                             field.onChange([...field.value, tag])
                           }
-
                         }}
-
-                        className={`text-xs px-3 py-1 rounded-full border cursor-pointer transition-colors duration-150
-                        ${
-                          isSelected
-                            ? "border-indigo-500 text-indigo-400 bg-indigo-500/10"
-                            : "border-[#252a45] text-gray-400 hover:border-indigo-500 hover:text-indigo-400"
-                        }`}
+                        className={`text-xs px-3 py-1 rounded-full border cursor-pointer transition-all duration-150 select-none
+                          ${
+                            isSelected
+                              ? "border-indigo-500 text-indigo-400 bg-indigo-500/10 shadow-sm shadow-indigo-500/20"
+                              : "border-[#252a45] text-gray-400 hover:border-indigo-500 hover:text-indigo-400"
+                          }`}
                       >
+                        {/* Shows a checkmark on selected tags */}
+                        {isSelected && <span className="mr-1">✓</span>}
                         {tag}
                       </span>
                     )
                   })}
                 </div>
+
+                {/*  Shows selected tags as a summary below */}
+                {field.value.length > 0 && (
+                  <p className="text-xs text-gray-500 mt-2">
+                    Selected:{" "}
+                    <span className="text-indigo-400">{field.value.join(", ")}</span>
+                  </p>
+                )}
 
                 <FormMessage />
               </FormItem>
@@ -163,29 +187,31 @@ const CreateProjectForm = () => {
           />
 
           {/* Submit Section */}
-
-          <DialogClose asChild>
-
-            {projectLimitReached ? (
-
-              <div>
-                <p className="text-sm text-red-400 text-center">
-                  you can create only 3 project with free plan, please upgrade your plan
-                </p>
-              </div>
-
-            ) : (
-
+          {projectLimitReached ? (
+            <div>
+              <p className="text-sm text-red-400 text-center">
+                You can create only 3 projects with the free plan. Please upgrade your plan.
+              </p>
+            </div>
+          ) : submitSuccess ? (
+            // FIX 3: Only close dialog after successful form submission
+            <DialogClose asChild>
               <Button
-                type="submit"
+                type="button"
                 className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition-colors"
               >
-                Create Project
+                Done
               </Button>
-
-            )}
-
-          </DialogClose>
+            </DialogClose>
+          ) : (
+            // Normal submit — dialog stays open until form is valid
+            <Button
+              type="submit"
+              className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold transition-colors"
+            >
+              Create Project
+            </Button>
+          )}
 
         </form>
       </Form>
