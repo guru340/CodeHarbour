@@ -33,6 +33,7 @@ public class Project {
     @ManyToOne
     private User owner;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "project",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Issue> issue=new ArrayList<>();
 

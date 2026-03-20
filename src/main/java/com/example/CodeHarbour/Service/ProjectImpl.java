@@ -19,6 +19,7 @@ public class ProjectImpl implements ProjectServices {
 
     @Autowired
     private UserServices userServices;
+    @Autowired
     private ChatService chatService;
 
     @Override

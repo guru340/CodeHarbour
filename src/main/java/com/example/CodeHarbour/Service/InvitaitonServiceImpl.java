@@ -30,7 +30,7 @@ public class InvitaitonServiceImpl implements InvitationService {
 
         invitaitionRepo.save(invitation1);
 
-        String invitaionlink="http://localhost:5173/accept_in?token="+invitation;
+        String invitaionlink="http://localhost:5173/accept_invitation?token=" +invitation;
         emailSerivce.sendEmailWithToken(mail,invitaionlink );
     }
 

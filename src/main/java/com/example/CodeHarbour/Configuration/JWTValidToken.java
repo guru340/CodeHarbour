@@ -38,7 +38,7 @@ public class JWTValidToken extends OncePerRequestFilter {
 
 
         try {
-            jwt = jwt.substring(7);
+            jwt = jwt.substring(7).trim();
 
             SecretKey key = Keys.hmacShaKeyFor(SECERT_KEY.getBytes());
             Claims claims = Jwts.parser()

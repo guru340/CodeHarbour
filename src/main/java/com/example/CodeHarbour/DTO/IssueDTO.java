@@ -21,7 +21,7 @@ public class IssueDTO {
     private String title;
     private String description;
     private String status;
-    private Long ProjectID;
+    private Long ProjectId;
     private String priority;
     private LocalDate userDate;
     private List<String> tags=new ArrayList<>();

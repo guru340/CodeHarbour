@@ -15,6 +15,7 @@ import java.util.List;
 @Entity
 public class Chat {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private  String name;

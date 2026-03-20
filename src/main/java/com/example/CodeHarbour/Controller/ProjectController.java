@@ -54,7 +54,7 @@ public class ProjectController {
 
     @PostMapping
     public ResponseEntity<Project>createProject(
-            @PathVariable Long projectId,
+
             @RequestHeader("Authorization")String jwt,
             @RequestBody Project project
     ) throws Exception {
@@ -79,8 +79,8 @@ public class ProjectController {
     @DeleteMapping("/{projectId}")
     public ResponseEntity<MessageResponse>deleteProject(
             @PathVariable Long projectId,
-            @RequestHeader("Authorization")String jwt,
-            @RequestBody Project project
+            @RequestHeader("Authorization")String jwt
+
     ) throws Exception {
         User User=userServices.findUserProfilebyjwt(jwt);
         projectServices.deleteProject(projectId,User.getId());
@@ -115,8 +115,8 @@ public class ProjectController {
     @PostMapping("/invite")
     public ResponseEntity<MessageResponse>sendInvitation(
             @RequestBody InviteRequest req,
-            @RequestHeader("Authorization")String jwt,
-            @RequestBody Project project
+            @RequestHeader("Authorization")String jwt
+
     ) throws Exception {
         User User=userServices.findUserProfilebyjwt(jwt);
         invitationService.sendInvitation(req.getEmail(),req.getProjectId());
@@ -128,8 +128,8 @@ public class ProjectController {
     @GetMapping("/accept_invitation")
     public ResponseEntity<Invitation>AcceptInvitation(
             @RequestParam String token,
-            @RequestHeader("Authorization")String jwt,
-            @RequestBody Project project
+            @RequestHeader("Authorization")String jwt
+
     ) throws Exception {
         User User=userServices.findUserProfilebyjwt(jwt);
        Invitation invitation =invitationService.acceptInvitaion(token,User.getId());

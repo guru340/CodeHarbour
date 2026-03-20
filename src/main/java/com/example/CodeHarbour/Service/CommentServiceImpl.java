@@ -23,7 +23,7 @@ public class CommentServiceImpl implements CommentSerivce {
     private UserRepo userRepo;
 
     @Override
-    public Comments createComment(Long issueId, Long userId, String Comment) throws Exception {
+    public Comments createComment(Long issueId, Long userId, String content) throws Exception {
         Optional<Issue> issueOptional=issueRepo.findById(issueId);
         Optional<User> userOptional=userRepo.findById(userId);
 
@@ -40,6 +40,7 @@ public class CommentServiceImpl implements CommentSerivce {
         Comments comments=new Comments();
         comments.setIssue(issue);
         comments.setUser(user);
+        comments.setContent(content);
         comments.setCreatedDatetime(LocalDateTime.now());
 
         Comments savedComment=commentRepo.save(comments);

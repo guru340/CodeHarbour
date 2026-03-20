@@ -11,9 +11,9 @@ import lombok.RequiredArgsConstructor;
 
 public class CreateMessageRequest {
 
-    private Long ProjectId;
+    private Long projectId;
 
-    private Long SenderId;
+    private Long senderId;
 
-    private String Content;
+    private String content;
 }

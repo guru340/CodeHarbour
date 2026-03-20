@@ -30,7 +30,7 @@ public class JwtProvider {
         Claims claims = Jwts.parser()
             .verifyWith(key)
             .build()
-            .parseSignedClaims(jwt)
+            .parseSignedClaims(jwt.trim())
             .getPayload();
 
         return String.valueOf(claims.get("email"));
