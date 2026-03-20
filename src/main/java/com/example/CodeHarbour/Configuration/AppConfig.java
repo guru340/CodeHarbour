@@ -41,7 +41,8 @@ public class AppConfig {
                 cfs.setAllowedOrigins(Arrays.asList(
                         "http://localhost:3000",
                         "http://localhost:5173",
-                        "http://localhost:4200"
+                        "http://localhost:4200",
+                        "https://codeharbour-dev.vercel.app"
 
                 ));
                 cfs.setAllowedMethods(Collections.singletonList("*"));
