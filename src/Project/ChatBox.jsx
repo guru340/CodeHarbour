@@ -1,30 +1,36 @@
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import { PaperPlaneIcon } from '@radix-ui/react-icons'
-
-const mockMessages = [
-  { id: 1, sender: "Raam", avatar: "R", text: "How are you", align: "left" },
-  { id: 2, sender: "Raam", avatar: "R", text: "How are you", align: "right" },
-  { id: 3, sender: "Raam", avatar: "R", text: "How are you", align: "left" },
-  { id: 4, sender: "Raam", avatar: "R", text: "How are you", align: "right" },
-]
+import { useDispatch, useSelector } from 'react-redux'
+import { fetchChatMessages,sendMessage } from '@/Redux/Chat/Action'
+import { useParams } from 'react-router-dom'
 
 const ChatBox = () => {
+  const dispatch = useDispatch()
+  const { id: projectId } = useParams()
 
-  const [messages, setMessages] = useState(mockMessages)
+  const { messages, loading } = useSelector((store) => store.chat)
+  const { user } = useSelector((store) => store.auth)
+
   const [input, setInput] = useState("")
+  const bottomRef = useRef(null)
+
+  useEffect(() => {
+    if (projectId) dispatch(fetchChatMessages(projectId))
+  }, [projectId])
+
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView({ behavior: "smooth" })
+  }, [messages])
 
   const handleSend = () => {
-    if (!input.trim()) return
-    const newMsg = {
-      id: Date.now(),
-      sender: "Raam",
-      avatar: "R",
-      text: input,
-      align: "right",
-    }
-    setMessages(prev => [...prev, newMsg])
+    if (!input.trim() || !user?.id || !projectId) return
+    dispatch(sendMessage({
+      senderId: user.id,
+      projectId: Number(projectId),
+      content: input.trim(),
+    }))
     setInput("")
   }
 
@@ -42,23 +48,56 @@ const ChatBox = () => {
 
       {/* Messages */}
       <div className='flex-1 overflow-y-auto px-4 py-4 space-y-4'>
-        {messages.map((msg) => (
-          <div
-            key={msg.id}
-            className={`flex items-start gap-3 ${msg.align === "right" ? "flex-row-reverse" : "flex-row"}`}
-          >
-            {/* Avatar */}
-            <div className='w-8 h-8 rounded-full bg-[#1e2340] border border-[#252a45] flex items-center justify-center text-xs font-semibold text-white flex-shrink-0'>
-              {msg.avatar}
-            </div>
 
-            {/* Bubble */}
-            <div className='bg-[#1a1d2e] border border-[#252a45] rounded-xl px-4 py-2 max-w-[60%]'>
-              <p className='text-sm font-semibold text-white mb-1'>{msg.sender}</p>
-              <p className='text-sm text-gray-400'>{msg.text}</p>
+        {loading && messages.length === 0 && (
+          <p className='text-xs text-gray-600 text-center mt-4'>Loading messages...</p>
+        )}
+
+        {!loading && messages.length === 0 && (
+          <p className='text-xs text-gray-600 text-center mt-4'>No messages yet. Say hi! 👋</p>
+        )}
+
+        {messages.map((msg) => {
+          const sender = msg.senderAt
+          
+          // backend returns number, Redux user.id might be string or number
+          const isMe = String(sender?.id) === String(user?.id)
+          const senderName = sender?.fullName || sender?.name || "User"
+          const senderInitial = senderName.charAt(0).toUpperCase()
+
+          // debug log — remove after confirming it works
+          console.log("msg:", msg.content, "| senderAt.id:", sender?.id, "| user.id:", user?.id, "| isMe:", isMe)
+
+          return (
+            <div
+              key={msg.id}
+              className={`flex items-start gap-3 ${isMe ? "flex-row-reverse" : "flex-row"}`}
+            >
+              {/* Avatar */}
+              <div className={`w-8 h-8 rounded-full border flex items-center justify-center text-xs font-semibold text-white flex-shrink-0
+                ${isMe ? "bg-indigo-600 border-indigo-400" : "bg-[#1e2340] border-[#252a45]"}`}>
+                {senderInitial}
+              </div>
+
+              {/* FIX: Bubble with content clearly shown */}
+              <div className={`rounded-xl px-4 py-2 max-w-[65%] border
+                ${isMe
+                  ? "bg-indigo-600/20 border-indigo-500/30"
+                  : "bg-[#1a1d2e] border-[#252a45]"
+                }`}>
+                <p className='text-xs font-semibold text-gray-400 mb-1'>
+                  {isMe ? "You" : senderName}
+                </p>
+                {/*  msg.content — the actual message text */}
+                <p className='text-sm text-white break-words'>
+                  {msg.content || ""}
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
+          )
+        })}
+
+        <div ref={bottomRef} />
       </div>
 
       {/* Input */}
