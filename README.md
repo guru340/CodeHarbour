@@ -36,7 +36,7 @@ React.js / HTML / CSS / JavaScript
 
 Backend
 
-Node.js / Express.js (or Spring Boot if used)
+Spring Boot
 
 Database
 
