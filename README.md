@@ -40,12 +40,12 @@ Spring Boot
 
 Database
 
-MongoDB / MySQL
+MySQL
 
 Dev Tools
 
 Git & GitHub
 
-Docker (optional)
+
 
 Postman
