@@ -21,6 +21,7 @@ public class Issue {
     private Long ProjectID;
     private String priority;
     private LocalDate userDate;
+    @ElementCollection
     private List<String> tags=new ArrayList<>();
 
     @ManyToOne

@@ -21,6 +21,7 @@ public class Subscription {
     private LocalDate SubscriptionStartDate;
     private LocalDate SubscriptionEndDate;
 
+    @Enumerated(EnumType.STRING)
     private PlanType planType;
 
     private boolean isValid;

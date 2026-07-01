@@ -24,6 +24,7 @@ public class Project {
     private String category;
 
 
+    @ElementCollection
     private List<String> tags=new ArrayList<>();
 
     @JsonIgnore
