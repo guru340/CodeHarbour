@@ -1,9 +1,9 @@
 package com.example.CodeHarbour.Configuration;
 
 import jakarta.servlet.http.HttpServletRequest;
-import org.jspecify.annotations.Nullable;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,7 +16,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 
 @Configuration
@@ -26,10 +25,12 @@ public class AppConfig {
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http)throws Exception{
         http.sessionManagement(Management->Management.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(Authorize->Authorize.requestMatchers("/api/**").authenticated()
+                .authorizeHttpRequests(Authorize->Authorize
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers("/api/**").authenticated()
                         .anyRequest().permitAll())
                 .addFilterBefore(new JWTValidToken(), BasicAuthenticationFilter.class)
-                .cors(Customizer.withDefaults()).csrf(csrf->csrf.disable())
+                .csrf(csrf->csrf.disable())
                 .cors(cors->cors.configurationSource(corsCofiguration()));
         return http.build();
     }
@@ -39,12 +40,13 @@ public class AppConfig {
             @Override
             public  CorsConfiguration getCorsConfiguration(HttpServletRequest request) {
                 CorsConfiguration cfs=new CorsConfiguration();
-                cfs.setAllowedOrigins(Arrays.asList(
+                cfs.setAllowedOriginPatterns(Arrays.asList(
                         "http://localhost:3000",
                         "http://localhost:5173",
                         "http://localhost:4200",
-                        "https://codeharbour-dev.vercel.app"
-
+                        "https://codeharbour-dev.vercel.app",
+                        "https://codeharbour-5mcquktaf-guru340s-projects.vercel.app",
+                        "https://codeharbour-*.vercel.app"
                 ));
                 cfs.setAllowedMethods(Collections.singletonList("*"));
                 cfs.setAllowCredentials(true);
