@@ -44,7 +44,7 @@ MySQL
 
 Dev Tools
 
-Git & GitHub
+Git & GitHub.
 
 
 
