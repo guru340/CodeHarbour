@@ -2,7 +2,7 @@
 
 A scalable and developer-centric platform designed to streamline coding workflows, improve collaboration, and accelerate project development.
 
-<p align="center"> <img src="https://img.shields.io/badge/Status-Active-success" /> <img src="https://img.shields.io/badge/Contributions-Welcome-blue" /> <img src="https://img.shields.io/badge/License-MIT-green" /> </p>
+<p align="center"> <img src="https://img.shields.io/badge/Status-Active-success" /> <img src="https://img.shields.io/badge/Contributions-Welcome-blue" /> <img src="https://img.shields.io/badge/License-MIT-green" /> </p>.
 
 📖 Overview
 
